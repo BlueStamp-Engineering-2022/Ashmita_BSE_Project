@@ -3,7 +3,7 @@ This will serve as a brief description of your project. Limit this to three sent
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
-| Ashmita A | Evergreen Valley Highschool | Electrical Engineering | Incoming Sophmore
+| Ashmita A | Evergreen Valley Highschool | Computer Science | Incoming Sophmore
 
 ![Headstone Image](https://bluestampengineering.com/wp-content/uploads/2016/05/improve.jpg)
   

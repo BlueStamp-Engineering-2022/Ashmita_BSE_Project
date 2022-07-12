@@ -1,5 +1,5 @@
 ﻿# Ring Lockbox
-A box that will lock and unlock with a specific ring.
+This box will lock and unlock when the right key is plced on it. This will use several components that read the key and verify it, and will not open if it is the wrong key. 
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|

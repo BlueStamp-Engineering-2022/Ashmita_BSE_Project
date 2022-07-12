@@ -5,7 +5,7 @@ A box that will lock and unlock with a specific ring.
 |:--:|:--:|:--:|:--:|
 | Ashmita A | Evergreen Valley Highschool | Computer Science | Incoming Sophmore
 
-![Headstone Image]([https://bluestampengineering.com/wp-content/uploads/2016/05/improve.jpg](https://lh3.googleusercontent.com/pw/AM-JKLUTDPZJ1nMjnSXb3Bv1bYI6Fr3Q978Or64M5QUFqxlIhb5ltoAhIuqBJxGRet-yWv_fqEdGYl_pj_hCf14-_v6Xmpq0MF-HiIzz97sc2_0Is-9NPNX1h9B_KBvvEmSvc0_iRrHNc8b_tPJPqY6oFT4k=w1398-h1863-no?authuser=0))
+![Headstone Image]([[https://bluestampengineering.com/wp-content/uploads/2016/05/improve.jpg](https://lh3.googleusercontent.com/pw/AM-JKLUTDPZJ1nMjnSXb3Bv1bYI6Fr3Q978Or64M5QUFqxlIhb5ltoAhIuqBJxGRet-yWv_fqEdGYl_pj_hCf14-_v6Xmpq0MF-HiIzz97sc2_0Is-9NPNX1h9B_KBvvEmSvc0_iRrHNc8b_tPJPqY6oFT4k=w1398-h1863-no?authuser=0](https://photos.google.com/share/AF1QipPfXXrUy84d3RworMUQWytms_AhB1PhceeMV76HeIOtnnEISkmCd99oGmAbPtCnKQ/photo/AF1QipNtGHE-_J-aHGGSM4qxV-BU0tkJFJSRBa1sXV7x?key=blBtb2RCb01sX1hWc04xS3NMREJ0d3FUOWY2eWxB))
   
 # Final Milestone
 My final milestone is the increased reliability and accuracy of my robot. I ameliorated the sagging and fixed the reliability of the finger. As discussed in my second milestone, the arm sags because of weight. I put in a block of wood at the base to hold up the upper arm; this has reverberating positive effects throughout the arm. I also realized that the forearm was getting disconnected from the elbow servo’s horn because of the weight stress on the joint. Now, I make sure to constantly tighten the screws at that joint. 

@@ -1,0 +1,110 @@
+#include <Servo.h>
+#include <Wire.h>
+#include <PN532_I2C.h>
+#include <PN532.h>
+#include <NfcAdapter.h>
+#include <ArduinoBlue.h>
+#include <SoftwareSerial.h>
+//#include <Adafruit_NeoPixel.h>
+
+const int BLUETOOTH_TX = 7;
+const int BLUETOOTH_RX = 8;
+int button;
+SoftwareSerial bluetooth(BLUETOOTH_TX, BLUETOOTH_RX);
+ArduinoBlue phone(bluetooth);
+  
+PN532_I2C pn532i2c(Wire);
+PN532 nfc(pn532i2c);
+Servo myservo;
+int pos = 0;
+uint8_t state = 1;
+
+//#define LED_PIN 6
+//#define LED_COUNT 32
+//Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  bluetooth.begin(9600);
+  myservo.attach(3);
+  nfc.begin();
+  Serial.println("hello");
+  uint32_t versiondata = nfc.getFirmwareVersion();
+  if (! versiondata) {
+    Serial.print("Didn't find PN532 board");
+    while (1); // halt
+  }
+  
+  // Got ok data, print it out!
+  Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX); 
+  Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
+  Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
+  Serial.println("Waiting for a key");
+  //strip.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  //strip.show();            // Turn OFF all pixels ASAP
+  //strip.setBrightness(50); // set light brightness to 50
+
+  
+  nfc.setPassiveActivationRetries(0x0F);
+  
+  // configure board to read RFID tags
+  nfc.SAMConfig();
+  
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  boolean working; // boolean to check whether or not the PN532 is reading key
+  String keyUid;
+  uint8_t uid[] = {0,0,0,0,0,0,0};
+  uint8_t uidLength;
+  
+  working = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, &uid[0], &uidLength); 
+
+  button = phone.getButton();
+  
+  if(working || button != -1){
+    for (uint8_t i=0; i<4; i++){ // stores the hex code for the key
+      keyUid += String(uid[i], HEX);
+    }
+    Serial.println(keyUid);
+    if(keyUid == "e38f341c" || button == 123){ // checks is the key is the right one
+      Serial.println(keyUid);
+      // state variable that changes based on the position of the servo
+      if(state == 1){ // locking the box or box is unlocked
+        state = 0; // change the state to show that it has been locked
+        for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 90 degrees
+          myservo.write(pos);              // tell servo to go to position in variable 'pos'
+          delay(15);                       // waits 15 ms for the servo to reach the position
+        }
+        //colorOff(50); // turn off the leds
+      }
+      else{ // unlocking the box or box is already locked
+        state = 1; // change the state to show that it has been unlocked
+        for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+          myservo.write(pos);              // tell servo to go to position in variable 'pos'
+          delay(15);                       // waits 15 ms for the servo to reach the position
+        }
+        //rainbow(30); // do a rainbow animation on the leds for 30 seconds
+      }
+    }
+    
+    delay(500);
+  }
+}
+
+//void colorOff(int wait) { // turns off the pixel
+  //for(int i=0; i<strip.numPixels(); i++) { // For each pixel in strip...
+    //strip.setPixelColor(i, strip.Color(0,0,0));         //  turn off each pixel
+    //strip.show();                          //  Update strip to match
+    //delay(wait);                           //  Pause for a moment
+  //}
+//}
+
+//void rainbow(int wait) { // makes a rainbow animation with LED changes the color 
+    //strip.rainbow(firstPixelHue, 1, 255, 255, true);
+    //strip.show(); // Update strip with new contents
+    //delay(wait);  // Pause for a moment
+  //}
+//}

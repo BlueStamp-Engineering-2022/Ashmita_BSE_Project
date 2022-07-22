@@ -12,6 +12,8 @@ My final milestone is adding bluetooth verification as well as the key opening t
 
 [![Milestone 3](https://res.cloudinary.com/marcomontalbano/image/upload/v1658508930/video_to_markdown/images/youtube--vJkqcrzIF2Q-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://www.youtube.com/watch?v=vJkqcrzIF2Q "Milestone 3")
 
+<img width="1240" alt="Screen Shot 2022-07-22 at 10 47 54 AM" src="https://user-images.githubusercontent.com/107584515/180495684-9ab11113-2ad0-47b5-84f8-375d92a9cf1f.png">
+
 # Second Milestone
 My second milestone is putting the Arduino, PN532, and servo into the lid of the box. I also tried to get the lock mechanism to work, but no matter how hard I tried to make the servo move the lock, the servo could not do it. After realizing that my initial idea would not work, I had to rethink and I decided to use the servo as the main lock. I 3D-printed my own lock and coded the servo to work with the lock. To be able to put the Arduino, PN532, and the servo in the box independently I had to solder some wires to the battery and power switch. I connected the red power wires together, the data wires together, and all the negative black together. While soldering all the black ones I forgot to add a wire making it very loose after attaching them all together. After getting all the wires soldered properlytogether I started testing the Arduino to see if it worked without being connected to the computer. The final step was gluing the servo in to make it lock.
 

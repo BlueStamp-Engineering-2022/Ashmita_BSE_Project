@@ -19,6 +19,10 @@ My second milestone is putting the Arduino, PN532, and servo into the lid of the
 
 [![Second milestone](https://res.cloudinary.com/marcomontalbano/image/upload/v1657380606/video_to_markdown/images/youtube--N2ovHtlDTGM-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://www.youtube.com/watch?v=N2ovHtlDTGM "Second milestone")
 
+<img width="516" alt="Screen Shot 2022-07-22 at 10 51 07 AM" src="https://user-images.githubusercontent.com/107584515/180496027-83b2e4d0-77ce-4466-b44c-25cac1d440d0.png">
+
+<img width="1371" alt="Screen Shot 2022-07-22 at 10 51 52 AM" src="https://user-images.githubusercontent.com/107584515/180496156-001cd6b5-fec2-4d32-b761-c295691d6ede.png">
+
 # First Milestone
 My first milestone was setting up the arduino, PN532, and servo to work with the code I set up. I wired it to connect them to all the components. To start coding I had to download the right software for the arduino. I started by downloading the libraries necessary for the Pn532 to communicate with the Arduino and read the key and card. I first used some example code to see if the PN532 worked and that was where I ran into problems. It took around 40 minutes to fix that problem and the Pn532 started reading the key and tag. When I tried to read the NFC ring, the Pn532 refused to read it. After a couple of tries it read the ring, but the ring had to be touching the board which wouldn't be feasible when the board was in the box. So I decided to use the key with my project and started coding to verify the key. I also worked out how the servo worked as I needed to embed that in my code. At first the PN532 would read the key but kept saying that it was the wrong one. The problem was that there were unnecessary characters with the verification and I capitilized the actual characters. Once I got the verfication working, I moved the servo code into my verification code.
 

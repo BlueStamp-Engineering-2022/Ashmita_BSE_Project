@@ -5,7 +5,7 @@
 #include <NfcAdapter.h>
 #include <ArduinoBlue.h>
 #include <SoftwareSerial.h>
-//#include <Adafruit_NeoPixel.h>
+#include <Adafruit_NeoPixel.h>
 
 const int BLUETOOTH_TX = 7;
 const int BLUETOOTH_RX = 8;
@@ -18,10 +18,12 @@ PN532 nfc(pn532i2c);
 Servo myservo;
 int pos = 0;
 uint8_t state = 1;
+static unsigned long lastupdate = 0;
+static uint16_t j=0;
 
-//#define LED_PIN 6
-//#define LED_COUNT 32
-//Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+#define LED_PIN 10
+#define LED_COUNT 32
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   // put your setup code here, to run once:
@@ -41,9 +43,9 @@ void setup() {
   Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
   Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
   Serial.println("Waiting for a key");
-  //strip.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
-  //strip.show();            // Turn OFF all pixels ASAP
-  //strip.setBrightness(50); // set light brightness to 50
+  strip.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip.show();            // Turn OFF all pixels ASAP
+  strip.setBrightness(50); // set light brightness to 50
 
   
   nfc.setPassiveActivationRetries(0x0F);
@@ -74,37 +76,64 @@ void loop() {
       // state variable that changes based on the position of the servo
       if(state == 1){ // locking the box or box is unlocked
         state = 0; // change the state to show that it has been locked
+        myservo.attach(3);
         for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 90 degrees
           myservo.write(pos);              // tell servo to go to position in variable 'pos'
           delay(15);                       // waits 15 ms for the servo to reach the position
         }
-        //colorOff(50); // turn off the leds
-      }
-      else{ // unlocking the box or box is already locked
+        myservo.detach();
+      } else{ // unlocking the box or box is already locked
         state = 1; // change the state to show that it has been unlocked
+        colorOff();// turn off the leds
+        myservo.attach(3);
         for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
           myservo.write(pos);              // tell servo to go to position in variable 'pos'
           delay(15);                       // waits 15 ms for the servo to reach the position
         }
-        //rainbow(30); // do a rainbow animation on the leds for 30 seconds
+        myservo.detach();
       }
     }
     
     delay(500);
+    
+  }
+
+  if (state == 0) {
+    if (millis() > lastupdate + 10) {
+      rainbowCycle();
+    }
   }
 }
 
-//void colorOff(int wait) { // turns off the pixel
-  //for(int i=0; i<strip.numPixels(); i++) { // For each pixel in strip...
-    //strip.setPixelColor(i, strip.Color(0,0,0));         //  turn off each pixel
-    //strip.show();                          //  Update strip to match
-    //delay(wait);                           //  Pause for a moment
-  //}
-//}
+void colorOff() { // turns off the pixel
+  for(int i=0; i<strip.numPixels(); i++) { // For each pixel in strip...
+    strip.setPixelColor(i, strip.Color(0,0,0));         //  turn off each pixel
+  }
+  strip.show();
+}
 
-//void rainbow(int wait) { // makes a rainbow animation with LED changes the color 
-    //strip.rainbow(firstPixelHue, 1, 255, 255, true);
-    //strip.show(); // Update strip with new contents
-    //delay(wait);  // Pause for a moment
-  //}
-//}
+void rainbowCycle() { // modified from Adafruit example to make it a state machine
+  for(int i=0; i< strip.numPixels(); i++) {
+    strip.setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
+  }
+  strip.show();
+  j += 12;
+  if(j >= 256*5) { 
+    j=0;
+  }
+  
+  lastupdate = millis(); // time for next change to the display
+}
+
+uint32_t Wheel(byte WheelPos) {
+  WheelPos = 255 - WheelPos;
+  if(WheelPos < 85) {
+    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  }
+  if(WheelPos < 170) {
+    WheelPos -= 85;
+    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+  WheelPos -= 170;
+  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+}
